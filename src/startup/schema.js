@@ -1,5 +1,6 @@
 const { makeExecutableSchema } = require('apollo-server-koa')
 const merge = require('lodash.merge')
+const helloWorldResolvers = require('../features/helloWorld/resolvers');
 
 const { loadTypedefsSync } = require('@graphql-tools/load')
 const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader')
@@ -11,7 +12,7 @@ const oldTypeDefs = []
 const sources = loadTypedefsSync(join(__dirname, '../**/*.graphql'), {
   loaders: [new GraphQLFileLoader()]
 })
-const resolvers = merge(userResolvers)
+const resolvers = merge(userResolvers, helloWorldResolvers)
 
 const typeDefs = [...sources.map(source => source.document), ...oldTypeDefs]
 
