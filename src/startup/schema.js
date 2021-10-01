@@ -13,7 +13,7 @@ const oldTypeDefs = []
 const sources = loadTypedefsSync(join(__dirname, '../**/*.graphql'), {
   loaders: [new GraphQLFileLoader()]
 })
-const resolvers = merge(userResolvers, helloWorldResolvers, conferenceResolvers)
+const resolvers = merge(userResolvers, helloWorldResolvers, conferenceResolvers, dictionaryResolvers)
 
 const typeDefs = [...sources.map(source => source.document), ...oldTypeDefs]
 
