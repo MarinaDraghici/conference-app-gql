@@ -1,3 +1,4 @@
+const { update } = require('ramda')
 const { SQLDataSource } = require('../../utils/sqlDataSource')
 
 const conferenceColumns = ['Id', 'Name', 'ConferenceTypeId', 'LocationId', 'CategoryId', 'StartDate', 'EndDate']
@@ -31,6 +32,34 @@ class ConferenceDb extends SQLDataSource {
 
   async getConferenceListTotalCount(filters) {
     return await this.knex('Conference').count('Id', { as: 'TotalCount' }).modify(this.generateWhereClause, filters).first()
+  }
+  async updateConferenceXAttendee({attendeeEmail, conferenceId, statusId}){
+    const existing =  await this.knex 
+    .select('Id', 'AttendeeEmail', 'ConferenceId')
+    .from ('ConferenceXAttendee')
+    .where('AttendeeEmail', attendeeEmail)
+    .andWhere('ConferenceId', conferenceId)
+    .first()
+
+    const updateAttendee={
+      AttendeeEmail: attendeeEmail,
+      ConferenceId:conferenceId,
+      StatusId:statusId
+    }
+    let result
+    if(existing?.id){
+      result = await this.knex ('ConferenceXAttendee')
+      .update(updateAttendee, 'statusId')
+      .where('Id', existing?.id)
+      //update
+    }
+    else {
+      //insert
+      result= await this.knex('ConferenceXAttendee')
+      .returning('StatusId')
+      .insert(updateAttendee)
+    }
+    return result[0]
   }
 }
 
