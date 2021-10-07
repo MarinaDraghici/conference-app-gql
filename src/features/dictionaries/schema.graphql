@@ -4,11 +4,7 @@ type Category {
   code: String
 }
 
-input CategoryInput {
-  id: ID!
-  name: String!
-  code: String
-}
+
 
 type Type {
   id: ID!
@@ -16,11 +12,6 @@ type Type {
   code: String
 }
 
-input TypeInput {
-  id: ID!
-  name: String!
-  code: String
-}
 
 type Country {
   id: ID!
